@@ -1,19 +1,32 @@
 #include<stdio.h>
 #define MS 5
-int front=-1,rear=-1,e;
+int e,c=0;
 void insert(int);
 int delete();
 int peek();
 void display();
-int c_queue[MS];
-
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node *front=NULL,*rear=NULL,*temp,*ptr;
+struct node *newnode()
+{
+    return ((struct node*)malloc(sizeof(struct node)));
+};
+void deletenode(struct node *ptr)
+{
+    ptr->next=NULL;
+    free(ptr);
+}
 int main()
 {
     int ch;
 
     do
     {
-        printf("\n----------Circular Queue operations-----------");
+        printf("\n----------Linear Queue operations-----------");
         printf("\n 1. INSERT ");
         printf("\n 2. DELETE ");
         printf("\n 3. PEEK FRONT ");
@@ -26,7 +39,7 @@ int main()
         switch(ch)
         {
         case 1:
-            if(front==(rear+1)%MS)
+            if(c==MS)
             {
                 printf("**OVERFLOW**");
                 break;
@@ -37,16 +50,17 @@ int main()
             break;
 
         case 2:
-            if(front==-1)
+            if(front==NULL)
             {
                 printf("**UNDERFLOW**");
                 break;
             }
-            printf("\n deleted Element is : %d ",delete());
+            printf("\n deleted Element is : %d ",deleteq());
             break;
 
         case 3:
-            printf("\n frontmost Element is : %d ",peek());
+            printf("\nFront element is : %d ",peek());
+
             break;
 
         case 4:
@@ -63,64 +77,70 @@ int main()
 
 void insert(int e)
 {
-    if(front==-1&&rear==-1)
+    temp=newnode();
+    temp->data=e;
+    temp->next=NULL;
+    if(front==NULL&&rear==NULL)
     {
-        front=rear=0;
+        front=rear=temp;
     }
     else
-        rear=(rear+1)%MS;
+    {
+        rear->next=temp;
+        rear=temp;
+    }
+    c++;
 
-    c_queue[rear]=e;
+
 }
 
-int delete()
+int deleteq()
 {
-    if(front==-1&&rear==-1)
+    if(front==NULL&&rear==NULL)
     {
         printf("**EMPTY QUEUE**");
         return;
     }
 
-    e=c_queue[front];
+    e=front->data;
+
     if(front==rear)
     {
-        front=rear=-1;
+        front=rear=NULL;
     }
     else
-        front=(front+1)%MS;
+        front=front->next;
 
     return e;
 }
 
 
-int peek()
-{
-    if(front==-1&&rear==-1)
-    {
-        printf("**EMPTY QUEUE**");
-        return;
-    }
-
-    e=c_queue[front];
-    return e;
-}
 
 void display()
 {
     int i;
 
-    if(front==-1&&rear==-1)
+    if(front==NULL&&rear==NULL)
     {
         printf("**EMPTY QUEUE**");
         return;
     }
 
-    printf("\n The queue is as follows : ");
-
-    for(i=front; i!=rear; i=(i+1)%MS)
+    ptr=front;
+    while(ptr!=NULL)
     {
-        printf("%d\n",c_queue[i]);
+        printf("\t %d",ptr->data);
+        ptr=ptr->next;
     }
-    printf("%d\n",c_queue[i]);
 }
+int peek()
+{
+    if(front==NULL)
+    {
+        printf("**EMPTY STACK**");
+        return 0;
+    }
 
+    int e=front->data;
+    return e;
+}

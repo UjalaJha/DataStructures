@@ -6,8 +6,9 @@ struct node
 {
     int data;
     struct node *next;
+    struct node *prev;
 };
-struct node *start=NULL;
+struct node *start=NULL,*ptrbefore,*ptr,*temp;;
 struct node *newnode()
 {
     return ((struct node*)malloc(sizeof(struct node)));
@@ -15,6 +16,7 @@ struct node *newnode()
 void deletenode(struct node *ptr)
 {
     ptr->next=NULL;
+    ptr->prev=NULL;
     free(ptr);
 }
 void insertat()
@@ -27,7 +29,6 @@ void insertat()
     }
     printf("\nenter the position at which to be inserted : ");
     scanf("%d",&p);
-
     temp=newnode();
     printf("\n enter the data = ");
     scanf("%d",&temp->data);
@@ -35,6 +36,8 @@ void insertat()
     if(p==1)
     {
         temp->next=start;
+        temp->prev=NULL;
+        start->prev=temp;
         start=temp;
     }
     else
@@ -45,8 +48,13 @@ void insertat()
 
             ptr=ptr->next;
         }
+        temp->prev=ptr;
         temp->next=ptr->next;
         ptr->next=temp;
+        if(temp->next!=NULL)
+        {
+            temp->next->prev=temp;
+        }
     }
 
 }
@@ -79,17 +87,24 @@ void insertbefore()
             if(ptr==start)
             {
                 temp->next=start;
+                temp->prev=start->prev;
+                start->prev=temp;
                 start=temp;
             }
             else
             {
-                ptrBefore=start;
-                while(ptrBefore->next!=ptr)
-                {
-                    ptrBefore=ptrBefore->next;
-                }
+
                 temp->next=ptr;
-                ptrBefore->next=temp;
+                temp->prev=ptr->prev;
+                ptr->prev=temp;
+                if(temp->prev!=NULL)
+                {
+                    temp->prev->next=temp;
+                }
+                else
+                {
+                    start=temp;
+                }
 
             }
         }
@@ -129,7 +144,12 @@ void insertafter()
             printf("\n enter the data = ");
             scanf("%d",&temp->data);
             temp->next=ptr->next;
+            temp->prev=ptr;
             ptr->next=temp;
+            if(temp->next!=NULL)
+            {
+                temp->next->prev=temp;
+            }
 
         }
         else
@@ -154,7 +174,7 @@ void deletevalue()
     {
         int num;
         struct node *ptr;
-        struct node *ptrAt,*ptrBefore,*temp;
+
         printf("\nenter the value to be deleted");
         scanf("%d",&num);
 
@@ -169,28 +189,33 @@ void deletevalue()
         if((ptr->data)==num)
         {
             printf("\nelement found at %d",pos);
-            ptrAt=ptr;
+
         }
 
-
-        if(ptrAt==start)
+        if(ptr->next!=NULL)
         {
-            start=start->next;
-            ptrAt->next=NULL;
-            free(ptrAt);
+            ptr->next->prev=ptr->prev;
         }
-        else
+        if(ptr->prev!=NULL)
         {
-            ptrBefore=start;
-            while(ptrBefore->next!=ptrAt)
+            ptr->prev->next=ptr->next;
+        }
+        if(ptr==start)
+        {
+            if(ptr->next==NULL)
             {
-                ptrBefore=ptrBefore->next;
+                start=NULL;
+            }
+            else
+            {
+                start=start->next;
             }
 
-            ptrBefore->next=ptrAt->next;
-            ptrAt->next=NULL;
-            free(ptrAt);
         }
+        deletenode(ptr);
+        free(ptr);
+
+
     }
 
 }
@@ -204,36 +229,39 @@ void deleteposition()
     {
         int pos,i;
         struct node *ptr;
-        struct node *ptrAt,*ptrBefore,*temp;
         printf("\nenter the position to be deleted : ");
         scanf("%d",&pos);
 
-        ptrAt=start;
+        ptr=start;
         for(i=1; i<=pos-1; i++)
         {
 
-            ptrAt=ptrAt->next;
+            ptr=ptr->next;
         }
 
 
-        if(ptrAt==start)
+        if(ptr->prev!=NULL)
         {
-            start=start->next;
-            ptrAt->next=NULL;
-            free(ptrAt);
+            ptr->prev->next=ptr->next;
         }
-        else
+        if(ptr->next!=NULL)
         {
-            ptrBefore=start;
-            while(ptrBefore->next!=ptrAt)
+            ptr->next->prev=ptr->prev;
+        }
+
+        if(ptr==start)
+        {
+            if(ptr->next==NULL)
             {
-                ptrBefore=ptrBefore->next;
+                start=NULL;
+            }
+            else
+            {
+                start=start->next;
             }
 
-            ptrBefore->next=ptrAt->next;
-            ptrAt->next=NULL;
-            free(ptrAt);
         }
+        deletenode(ptr);
     }
 }
 void create()
@@ -241,6 +269,7 @@ void create()
 
     char choice;
     struct node *temp,*end;
+    end=NULL;
     do
     {
 
@@ -248,6 +277,7 @@ void create()
         temp=newnode();
         scanf("%d",&temp->data);
         temp->next=NULL;
+        temp->prev=NULL;
 
         if(start==NULL)
         {
@@ -261,7 +291,6 @@ void create()
         }
         end=temp;
         c++;
-
         printf("\n Do you want to create another node : ");
         choice=getche();
 
@@ -327,7 +356,7 @@ void search()
     }
 
 }
-main()
+int main()
 {
     char ch;
     do
@@ -408,3 +437,4 @@ main()
     while(ch!=6);
 
 }
+

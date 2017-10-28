@@ -25,7 +25,7 @@ int main()
 
         switch(ch)
         {
-            case 1:
+        case 1:
             if(rear==MS-1)
             {
                 printf("**OVERFLOW**");
@@ -36,7 +36,7 @@ int main()
             insert(e);
             break;
 
-            case 2:
+        case 2:
             if(front==-1)
             {
                 printf("**UNDERFLOW**");
@@ -45,15 +45,15 @@ int main()
             printf("\n deleted Element is : %d ",delete());
             break;
 
-            case 3:
+        case 3:
             printf("\n frontmost Element is : %d ",peek());
             break;
 
-            case 4:
+        case 4:
             display();
             break;
 
-            case 5:
+        case 5:
             printf("\n Exiting......");
             break;
         }
@@ -63,22 +63,22 @@ int main()
 
 void insert(int e)
 {
-   if(front==-1&&rear==-1)
-   {
-       front=rear=0;
-   }
-   else
-    rear++;
+    if(front==-1&&rear==-1)
+    {
+        front=rear=0;
+    }
+    else
+        rear++;
 
-   queue[rear]=e;
+    queue[rear]=e;
 }
 
 int delete()
 {
     if(front==-1&&rear==-1)
     {
-    printf("**EMPTY QUEUE**");
-    return;
+        printf("**EMPTY QUEUE**");
+        return;
     }
 
     e=queue[front];
@@ -87,7 +87,7 @@ int delete()
         front=rear=-1;
     }
     else
-    front++;
+        front++;
 
     return e;
 }
@@ -97,8 +97,8 @@ int peek()
 {
     if(front==-1&&rear==-1)
     {
-    printf("**EMPTY QUEUE**");
-    return;
+        printf("**EMPTY QUEUE**");
+        return;
     }
 
     e=queue[front];
@@ -111,13 +111,13 @@ void display()
 
     if(front==-1&&rear==-1)
     {
-    printf("**EMPTY QUEUE**");
-    return;
+        printf("**EMPTY QUEUE**");
+        return;
     }
 
     printf("\n The queue is as follows : ");
-    for(i=front;i<=rear;i++)
+    for(i=front; i<=rear; i++)
     {
-    printf("%d\t",queue[i]);
+        printf("%d\t",queue[i]);
     }
- }
+}

@@ -1,15 +1,27 @@
 #include<stdio.h>
 #define MS 5
-int top=-1,e;
 void push(int);
 int pop();
-int peek();
 void display();
-int stack[MS];
-
+struct node *top=NULL, *ptr, *temp;
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node *newnode()
+{
+    return ((struct node*)malloc(sizeof(struct node)));
+};
+void delnode(struct node *ptr)
+{
+    ptr->next=NULL;
+    free(ptr);
+}
+int c=0;
 int main()
 {
-    int ch;
+    int ch,e;
 
     do
     {
@@ -26,7 +38,7 @@ int main()
         switch(ch)
         {
         case 1:
-            if(top==MS-1)
+            if(c==MS)
             {
                 printf("**OVERFLOW**");
                 break;
@@ -37,7 +49,7 @@ int main()
             break;
 
         case 2:
-            if(top==-1)
+            if(top==NULL)
             {
                 printf("**UNDERFLOW**");
                 break;
@@ -62,42 +74,58 @@ int main()
 }
 void push(int e)
 {
-    top++;
-    stack[top]=e;
+    temp=newnode();
+    temp->data=e;
+    temp->next=NULL;
+
+    if(top==NULL)
+    {
+        top=temp;
+    }
+    else
+    {
+        temp->next=top;
+        top=temp;
+    }
+    c++;
+
 }
 
 int pop()
 {
-    e=stack[top];
-    top--;
+    int e=top->data;
+    ptr=top;
+    top=top->next;
+    delnode(ptr);
     return e;
+}
+
+
+void display()
+{
+    ptr = top;
+
+    if (ptr == NULL)
+    {
+        printf("Stack is empty");
+        return;
+    }
+
+    while (ptr != NULL)
+    {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    }
 }
 
 int peek()
 {
-    if(top==-1)
+    if(top==NULL)
     {
         printf("**EMPTY STACK**");
         return 0;
     }
 
-    e=stack[top];
+    int e=top->data;
     return e;
-}
-
-void display()
-{
-    int i;
-
-    if(top==-1)
-    {
-        printf("**EMPTY STACK**");
-        return ;
-    }
-
-    printf("\n The Stack is as follows : ");
-    for(i=top; i>=0; i--)
-    {
-        printf("%d\t",stack[i]);
-    }
 }
