@@ -411,7 +411,7 @@ int main()
             char c;
             printf("\n1. Delete by value");
             printf("\n2. delete by position");
-            printf("\nEnter Choice");
+            printf("\nEnter Choice : ");
             scanf("%d",&c);
             switch(c)
             {

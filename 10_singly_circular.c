@@ -50,7 +50,7 @@ void deletevalue()
         {
             while(ptrAt->next!=start)
             {
-                 ptrAt=ptrAt->next;
+                ptrAt=ptrAt->next;
             }
             ptrAt->next=start->next;
             free(start);
@@ -73,7 +73,51 @@ void deletevalue()
 }
 void deleteposition()
 {
+    struct node *ptr;
+    struct node *ptrAt,*ptrBefore,*temp;
+    if(start==NULL)
+    {
+        printf("linked list not created");
+    }
+    else
+    {
+        int pos,i;
+        struct node *ptr;
+        printf("\nenter the position to be deleted : ");
+        scanf("%d",&pos);
 
+        ptr=start;
+        for(i=1; i<=pos-1; i++)
+        {
+
+            ptr=ptr->next;
+        }
+        printf("%d",ptr->data);
+        ptrAt=ptr;
+        if(ptrAt==start)
+        {
+            while(ptrAt->next!=start)
+            {
+                ptrAt=ptrAt->next;
+            }
+            ptrAt->next=start->next;
+            free(start);
+            start=ptrAt->next;
+        }
+        else
+        {
+            ptrBefore=start;
+            while(ptrBefore->next!=ptrAt)
+            {
+                ptrBefore=ptrBefore->next;
+            }
+
+            ptrBefore->next=ptrAt->next;
+            ptrAt->next=NULL;
+            free(ptrAt);
+        }
+
+    }
 }
 void insertat()
 {
@@ -100,11 +144,9 @@ void insertat()
         {
             end=end->next;
         }
-
-
-          end->next=temp;
-          temp->next=start;
-          start=temp;
+        end->next=temp;
+        temp->next=start;
+        start=temp;
 
 
     }
@@ -112,25 +154,115 @@ void insertat()
     {
 
 
-      ptr=start;
-      for(i=1;i<=p-2;i++)
-      {
+        ptr=start;
+        for(i=1; i<=p-2; i++)
+        {
 
-          ptr=ptr->next;
-      }
-      temp->next=ptr->next;
-      ptr->next=temp;
+            ptr=ptr->next;
+        }
+        temp->next=ptr->next;
+        ptr->next=temp;
 
     }
 
 }
 void insertbefore()
 {
+    int num;
+    struct node *ptr,*temp,*ptrBefore,*end;
+    if(start==NULL)
+    {
+        printf("linked list not created");
+    }
+    else
+    {
+        printf("\nenter the value before which to be inserted : ");
+        scanf("%d",&num);
+        ptr=start;
+        int pos=1;
+        while(ptr->data!=num&&ptr->next!=start)
+        {
+            ptr=ptr->next;
+            pos++;
+        }
+         if((ptr->data)==num)
+        {
+            printf("\nelement found at %d",pos);
+            temp=newnode();
+            printf("\n enter the data = ");
+            scanf("%d",&temp->data);
+            if(ptr==start)
+            {
+                 end=start;
+                while(end->next!=start)
+                {
+                    end=end->next;
+                }
+                end->next=temp;
+                temp->next=start;
+                start=temp;
+            }
+
+            else
+            {
+                ptrBefore=start;
+                while(ptrBefore->next!=ptr)
+                {
+                    ptrBefore=ptrBefore->next;
+                }
+                temp->next=ptr;
+                ptrBefore->next=temp;
+
+            }
+       }
+        else
+        {
+            printf("\nelement not found");
+            return;
+        }
+    }
+
 
 }
 void insertafter()
 {
+    int num;
+    struct node *ptr,*temp;
+    if(start==NULL)
+    {
+        printf("linked list not created");
+    }
+    else
+    {
+        printf("\nenter the value after which to be inserted : ");
+        scanf("%d",&num);
 
+        ptr=start;
+        int pos=1;
+        while(ptr->data!=num&&ptr->next!=start)
+        {
+            ptr=ptr->next;
+            pos++;
+
+        }
+        if((ptr->data)==num)
+        {
+            printf("\nelement found at %d",pos);
+            temp=newnode();
+            printf("\n enter the data = ");
+            scanf("%d",&temp->data);
+
+            temp->next=ptr->next;
+            ptr->next=temp;
+
+        }
+        else
+        {
+            printf("\nelement not found");
+            return;
+        }
+
+    }
 }
 
 void create()
@@ -138,7 +270,8 @@ void create()
 
     char choice;
     struct node *temp,*end;
-    do{
+    do
+    {
 
         printf("\n enter data : ");
         temp=newnode();
@@ -162,8 +295,9 @@ void create()
         printf("\n Do you want to create another node : ");
         choice=getche();
 
-        }while(choice=='y');
-        printf("\ncount = %d",c);
+    }
+    while(choice=='y');
+    printf("\ncount = %d",c);
 }
 void display()
 {
@@ -175,6 +309,7 @@ void display()
         ptr=ptr->next;
     }
     printf("%d\t",ptr->data);
+
 }
 void search()
 {
@@ -216,10 +351,10 @@ void search()
 
 
     }
-        if (flag==0)
-        {
-            printf("\n element not found");
-        }
+    if (flag==0)
+    {
+        printf("\n element not found");
+    }
 
 
 }
@@ -240,66 +375,68 @@ main()
         scanf("%d",&ch);
         switch(ch)
         {
+        case 1:
+            create();
+            break;
+
+        case 2:
+        {
+
+            char ch;
+            printf("\n1. Insert at a position");
+            printf("\n2. Insert after a value");
+            printf("\n3. Insert before a value");
+            printf("\nEnter Choice : ");
+            scanf("%d",&ch);
+            switch(ch)
+            {
             case 1:
-                create();
+                insertat();
                 break;
-
             case 2:
-                {
-
-                char ch;
-                printf("\n1. Insert at a position");
-                printf("\n2. Insert after a value");
-                printf("\n3. Insert before a value");
-                printf("\nEnter Choice : ");
-                scanf("%d",&ch);
-                switch(ch)
-                {
-                    case 1:
-                        insertat();
-                        break;
-                    case 2:
-                        insertafter();
-                        break;
-                    case 3:
-                        insertbefore();
-                        break;
-                }
-                }
+                insertafter();
                 break;
-
-
             case 3:
-                {
-                    char c;
-                    printf("\n1. Delete by value");
-                    printf("\n2. delete by position");
-                    printf("\nEnter Choice");
-                    scanf("%d",&c);
-                    switch(c)
-                    {
-                        case 1:
-                            deletevalue();
-                            break;
-                        case 2:
-                            deleteposition();
-                            break;
-                    }
-                }
+                insertbefore();
                 break;
+            }
+        }
+        break;
 
 
-            case 4:
-                search();
+        case 3:
+        {
+            char c;
+            printf("\n1. Delete by value");
+            printf("\n2. delete by position");
+            printf("\nEnter Choice : ");
+            scanf("%d",&c);
+            switch(c)
+            {
+            case 1:
+                deletevalue();
                 break;
-            case 5:
-                display();
+            case 2:
+                deleteposition();
                 break;
-            case 6:
-                printf("Exiting.....");
-                break;
+            }
+        }
+        break;
+
+
+        case 4:
+            search();
+            break;
+        case 5:
+            display();
+            break;
+        case 6:
+            printf("Exiting.....");
+            break;
         }
 
-    }while(ch!=6);
+    }
+    while(ch!=6);
 
 }
+
