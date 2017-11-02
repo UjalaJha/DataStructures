@@ -175,7 +175,7 @@ void deletevalue()
         int num;
         struct node *ptr;
 
-        printf("\nenter the value to be deleted");
+        printf("\nenter the value to be deleted : ");
         scanf("%d",&num);
 
         ptr=start;
@@ -188,7 +188,7 @@ void deletevalue()
         }
         if((ptr->data)==num)
         {
-            printf("\nelement found at %d",pos);
+            printf("\nelement found at : %d",pos);
 
         }
 
@@ -213,7 +213,7 @@ void deletevalue()
 
         }
         deletenode(ptr);
-        free(ptr);
+
 
 
     }
@@ -238,15 +238,18 @@ void deleteposition()
 
             ptr=ptr->next;
         }
+        printf("%d",ptr->data);
 
 
-        if(ptr->prev!=NULL)
-        {
-            ptr->prev->next=ptr->next;
-        }
+
         if(ptr->next!=NULL)
         {
             ptr->next->prev=ptr->prev;
+
+        }
+        if(ptr->prev!=NULL)
+        {
+            ptr->prev->next=ptr->next;
         }
 
         if(ptr==start)
@@ -287,6 +290,7 @@ void create()
         else
         {
             end->next=temp;
+            temp->prev=end;
 
         }
         end=temp;
