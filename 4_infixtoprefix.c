@@ -3,8 +3,10 @@
 #include<string.h>
 #define MS 100
 int top=-1;
+int tops=-1;
 char e;
 char stack[MS];
+char strings[MS];
 void push(char e)
 {
     top++;
@@ -15,6 +17,18 @@ char pop()
 {
     e=stack[top];
     top--;
+    return e;
+}
+void pushs(char e)
+{
+    tops++;
+    strings[tops]=e;
+}
+
+char pops()
+{
+    e=strings[tops];
+    tops--;
     return e;
 }
 getpriority(char c)
@@ -35,14 +49,12 @@ int main()
     int n=strlen(s);
     s[-1]='(';
     push(')');
-    strcpy(b," ");
+    strcpy(b,"");
     for(i=n-1;i>=-1;i--)
     {
         if((s[i])>='a'&&s[i]<='z')
         {
-            b[j]=s[i];
-            j++;
-            printf("%c",s[i]);
+            pushs(s[i]);
 
         }
         else if(s[i]==')')
@@ -55,7 +67,7 @@ int main()
             {
                 //b[j]= pop();
                 //j++;
-                printf("%c",pop());
+                pushs(pop());
             }
 
         }
@@ -66,7 +78,7 @@ int main()
 
                 //b[j] = pop();
                 //j++;
-                printf("%c",pop());
+                 pushs(pop());
 
             }
 
@@ -76,6 +88,11 @@ int main()
 
         }
     }
+    printf("prefix exp : ");
+     while(tops!=-1)
+        {
+            printf("%c",pops());
+        }
 
 
 
